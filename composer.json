@@ -1,0 +1,28 @@
+{
+  "name": "ztdan4ik/php-tdlib",
+  "description": "PHP TDLib implementation",
+  "type": "library",
+  "keywords": [
+    "td",
+    "tdlib",
+    "telegram",
+    "telegram api",
+    "php telegram"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Vadym Kraiduba",
+      "email": "kraiduba@gmail.com"
+    }
+  ],
+  "minimum-stability": "beta",
+  "require": {
+    "php": ">=7.1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "ztdan4ik\\phptd\\": "src"
+    }
+  }
+}
