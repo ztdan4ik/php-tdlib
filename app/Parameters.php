@@ -1,5 +1,5 @@
 <?php
-namespace phptd;
+namespace ztdan4ik\phptd;
 
 class Parameters
 {

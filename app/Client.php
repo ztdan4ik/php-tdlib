@@ -1,5 +1,5 @@
 <?php
-namespace phptd;
+namespace ztdan4ik\phptd;
 
 /**
  * Class Client
@@ -48,7 +48,7 @@ class Client
     }
 
     /**
-     * @param $parameters \phptd\Parameters;
+     * @param $parameters \ztdan4ik\phptd\Parameters;
      */
     public function setTdlibParameters($parameters) : void
     {
