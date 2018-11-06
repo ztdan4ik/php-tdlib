@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "ztdan4ik\\phptd\\": "src"
+      "ztdan4ik\\phptd\\": "app"
     }
   }
 }
