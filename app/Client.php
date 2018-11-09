@@ -8,17 +8,25 @@ namespace ztdan4ik\phptd;
 class Client
 {
     /**
-     * Types
+     * Update types
      */
     const TYPE_UPDATE_AUTH = 'updateAuthorizationState';
     const TYPE_UPDATE_TERMS = 'updateTermsOfService';
+    const TYPE_OK = 'ok';
+    const TYPE_ERROR = 'error';
 
     /**
-     * States
+     * Authorization States
      */
+    const AUTH_STATE_PARAMS = 'authorizationStateWaitTdlibParameters';
+    const AUTH_STATE_KEY = 'authorizationStateWaitEncryptionKey';
     const AUTH_STATE_PHONE = 'authorizationStateWaitPhoneNumber';
     const AUTH_STATE_CODE = 'authorizationStateWaitCode';
     const AUTH_STATE_READY = 'authorizationStateReady';
+    const AUTH_STATE_CLOSED = 'authorizationStateClosed';
+    const AUTH_STATE_CLOSING = 'authorizationStateClosing';
+    const AUTH_STATE_LOGGING_OUT = 'authorizationStateLoggingOut';
+    const AUTH_STATE_PASSWD = 'authorizationStateWaitPassword';
 
     /**
      * @var int
@@ -52,7 +60,7 @@ class Client
      */
     public function setTdlibParameters($parameters) : void
     {
-        $this->send('setTdlibParameters', ['parameters' => $parameters->toArray()]);
+        $this->send('setTdlibParameters', ['parameters' => $parameters->toArray()], 'setTdlibParameters');
     }
 
     /**
@@ -60,7 +68,7 @@ class Client
      */
     public function setDatabaseEncryptionKey($key = null) : void
     {
-        $this->send('setDatabaseEncryptionKey', ['new_encryption_key' => $key]);
+        $this->send('setDatabaseEncryptionKey', ['new_encryption_key' => $key], 'setDatabaseEncryptionKey');
     }
 
     /**
@@ -68,7 +76,7 @@ class Client
      */
     public function setAuthenticationPhoneNumber($phone) : void
     {
-        $this->send('setAuthenticationPhoneNumber', ['phone_number' => $phone]);
+        $this->send('setAuthenticationPhoneNumber', ['phone_number' => $phone], 'setAuthenticationPhoneNumber');
     }
 
     /**
@@ -76,11 +84,11 @@ class Client
      */
     public function checkAuthenticationCode($code, $first_name = null, $last_name = null) : void
     {
-        $this->send('checkAuthenticationCode', ['code' => $code, 'first_name' => $first_name, 'last_name' => $last_name]);
+        $this->send('checkAuthenticationCode', ['code' => $code, 'first_name' => $first_name, 'last_name' => $last_name], 'checkAuthenticationCode');
     }
 
     /**
-     * @param string $id
+     * @param $id
      */
     public function acceptTermsOfService($id) : void
     {
@@ -88,12 +96,15 @@ class Client
     }
 
     /**
-     * @param string $type
+     * @param $type
      * @param array $parameters
+     * @param null|string|integer $extra
      */
-    public function send($type, $parameters = []) : void
+    public function send($type, $parameters = [], $extra = false) : void
     {
-        $parameters = json_encode(array_merge(['@type' => $type], $parameters));
+        $request['@type'] = $type;
+        if($extra) $request['@extra'] = $extra;
+        $parameters = json_encode(array_merge($request, $parameters));
         td_json_client_send($this->client, $parameters);
     }
 
@@ -117,11 +128,10 @@ class Client
         return td_json_client_receive($this->client, $this->timeout);
     }
 
-    /**
-     *
-     */
+
     public function destroy() : void
     {
-        td_json_client_func_destroy($this->client);
+        td_json_client_destroy($this->client);
     }
+
 }
